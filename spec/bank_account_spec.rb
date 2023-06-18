@@ -18,4 +18,15 @@ RSpec.describe BankAccount do
       expect(result).to eq "date || credit || debit || balance\n10/01/2023 || 1000.00 || || 1000.00"
     end
   end
+  
+  context "when the client makes a withdrawal" do
+    it "shows up on her bank statement with a total" do
+      bank_account = BankAccount.new
+      time = Time.new(2023, 01, 14)
+      bank_account.withdrawal(500, time)
+      result = bank_account.statement
+      expect(result).to eq "date || credit || debit || balance\n14/01/2023 || || 500.00 || -500.00"
+    end
+  end
+
 end
