@@ -17,33 +17,29 @@ class BankAccount
   end
 
   def deposit(amount, current_date)
-    @balance += amount
-
-    transfer = {
-      date: current_date,
-      credit: amount,
-      debit: 0,
-      balance: @balance
-    }
-
-    @transfers.push(transfer)
+    make_transfer(current_date, credit: amount)
   end
   
   def withdrawal(amount, current_date)
-    @balance -= amount
-
-    transfer = {
-      date: current_date,
-      credit: 0,
-      debit: amount,
-      balance: @balance
-    }
-  
-    @transfers.push(transfer)
+    make_transfer(current_date, debit: amount)
   end
 
   private
+  
+  def make_transfer(current_date, credit: 0, debit: 0)
+    @balance += credit
+    @balance -= debit
+    
+    transfer = {
+      date: current_date,
+      credit: credit,
+      debit: debit,
+      balance: @balance
+    }
 
+    @transfers.push(transfer)
+  end
+  
   def deposit_to_s(transfer)
     return transfer[:date].strftime("%d/%m/%Y") +
     " || " + transfer_amount_to_s(transfer[:credit]) +
