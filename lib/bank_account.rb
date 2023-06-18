@@ -7,9 +7,10 @@ class BankAccount
   def statement
     header = ["date || credit || debit || balance"]
 
-    transfers = @transfers.each do |transfer|
-      header << deposit_to_s(transfer) if @transfers.length == 1 if transfer[:debit].zero?
-      header << withdrawal_to_s(transfer) if @transfers.length == 1 if transfer[:credit].zero?
+    transfers = @transfers.reverse.each do |transfer|
+      # binding.irb
+      header << deposit_to_s(transfer) if transfer[:debit].zero?
+      header << withdrawal_to_s(transfer) if transfer[:credit].zero?
     end
 
     return header.join("\n")
