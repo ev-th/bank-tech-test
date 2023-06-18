@@ -5,15 +5,10 @@ class BankAccount
   end
 
   def statement
-    header = ["date || credit || debit || balance"]
+    rows = ["date || credit || debit || balance"]
+    rows += @transfers.reverse.map { |transfer| transfer_to_s(transfer)}
 
-    transfers = @transfers.reverse.each do |transfer|
-      # binding.irb
-      header << deposit_to_s(transfer) if transfer[:debit].zero?
-      header << withdrawal_to_s(transfer) if transfer[:credit].zero?
-    end
-
-    return header.join("\n")
+    return rows.join("\n")
   end
 
   def deposit(amount, current_date)
@@ -27,8 +22,7 @@ class BankAccount
   private
   
   def make_transfer(current_date, credit: 0, debit: 0)
-    @balance += credit
-    @balance -= debit
+    @balance += credit - debit
     
     transfer = {
       date: current_date,
@@ -40,21 +34,26 @@ class BankAccount
     @transfers.push(transfer)
   end
   
-  def deposit_to_s(transfer)
-    return transfer[:date].strftime("%d/%m/%Y") +
-    " || " + transfer_amount_to_s(transfer[:credit]) +
-    " || " + 
-    "|| " + transfer_amount_to_s(transfer[:balance])
+  def transfer_to_s(transfer)
+    formatted_transfer = [format_date(transfer[:date]) + " || "]
+    
+    if transfer[:debit].zero?
+      formatted_transfer.push(amount_to_s(transfer[:credit]) + " ||")
+    else
+      formatted_transfer.push("|| " + amount_to_s(transfer[:debit]))
+    end
+
+    formatted_transfer.push(" || " + amount_to_s(transfer[:balance]))
+
+    formatted_transfer.join("")
+
   end
 
-  def withdrawal_to_s(transfer)
-    return transfer[:date].strftime("%d/%m/%Y") +
-    " || " + 
-    "|| " + transfer_amount_to_s(transfer[:debit]) +
-    " || " + transfer_amount_to_s(transfer[:balance])
-  end
-
-  def transfer_amount_to_s(amount)
+  def amount_to_s(amount)
     sprintf("%.2f", amount.to_f)
+  end
+
+  def format_date(date)
+    date.strftime("%d/%m/%Y")
   end
 end
