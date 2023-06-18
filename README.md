@@ -4,11 +4,12 @@ A practice tech test for week 10 of Makers Academy. The program provides a bank 
 
 ## Setup
 
-Clone the repository and install dependencies:
+Clone the repository, install dependencies, and run tests:
 ```shell
 git clone https://github.com/ev-th/bank-tech-test.git
 cd bank-tech-test
 bundle install
+rspec
 ```
 
 ## Usage
@@ -31,11 +32,22 @@ statement = account.statement
 puts(statement)
 ```
 
+## Demonstration
+![repl demonstration](./demo.png)
 
+## Approach
+### Plan
+It made sense to me to have a BankAccount class that would hold some state about transfers and have functionality for withdrawals, deposits and statement printing. I considered making a class for transfers, but decided that since the program is very simple and I couldn't think of any functionality they need. I decided to stick to a hash for now.
 
+### Writing the code
+I approached this program test first, ensuring to implement all the requirements, no more or less. I started by writing the simplest feature test for returning a printable statement before deposits or withdrawals were made, then followed red/green/refactor steps. I ensured the tests passed in the simplest way I could, and didn't refactor the code until required to by further tests. I then made tests for a single deposit, a single withdrawal, and finally for a combination of both. With each new test, I implemented the code to pass it before moving on to the next test.
 
+### Refactor
+Once the requirements were covered by the tests and the tests were passing, I refactored my code for DRYness and extracted some functionality into private methods so each method has a single responsibility. I ensured that only the 'statement', 'deposit' and 'withdraw' methods were public in order to satisfy the requirements. I changed a few method and variable names to be more descriptive and made some changes to reduce my Rubocop offenses.
 
-# Bank tech test
+The following is copied from the README of the original tech test specifications:
+
+# Requirements 
 
 Today, you'll practice doing a tech test.
 
