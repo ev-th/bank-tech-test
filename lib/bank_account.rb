@@ -8,7 +8,7 @@ class BankAccount
     rows = ['date || credit || debit || balance']
     rows += @transfers.reverse.map { |transfer| transfer_to_s(transfer) }
 
-    rows.join('\n')
+    rows.join("\n")
   end
 
   def deposit(amount, current_date = Time.now)

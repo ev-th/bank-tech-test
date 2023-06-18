@@ -19,7 +19,7 @@ RSpec.describe BankAccount do
       bank_account.deposit(1000, date)
 
       result = bank_account.statement
-      expected_result = 'date || credit || debit || balance\n' \
+      expected_result = "date || credit || debit || balance\n" \
         '10/01/2023 || 1000.00 || || 1000.00'
 
       expect(result).to eq expected_result
@@ -33,7 +33,7 @@ RSpec.describe BankAccount do
       bank_account.withdraw(500, date)
 
       result = bank_account.statement
-      expected_result = 'date || credit || debit || balance\n' \
+      expected_result = "date || credit || debit || balance\n" \
         '14/01/2023 || || 500.00 || -500.00'
 
       expect(result).to eq expected_result
@@ -51,9 +51,9 @@ RSpec.describe BankAccount do
       bank_account.withdraw(500, date3)
 
       result = bank_account.statement
-      expected_result = 'date || credit || debit || balance\n' \
-        '14/01/2023 || || 500.00 || 2500.00\n' \
-        '13/01/2023 || 2000.00 || || 3000.00\n' \
+      expected_result = "date || credit || debit || balance\n" \
+        "14/01/2023 || || 500.00 || 2500.00\n" \
+        "13/01/2023 || 2000.00 || || 3000.00\n" \
         '10/01/2023 || 1000.00 || || 1000.00'
 
       expect(result).to eq expected_result
