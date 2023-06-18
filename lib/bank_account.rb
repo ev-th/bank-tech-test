@@ -11,11 +11,11 @@ class BankAccount
     return rows.join("\n")
   end
 
-  def deposit(amount, current_date)
+  def deposit(amount, current_date=Time.now)
     return make_transfer(current_date, credit: amount)
   end
   
-  def withdraw(amount, current_date)
+  def withdraw(amount, current_date=Time.now)
     return make_transfer(current_date, debit: amount)
   end
 
