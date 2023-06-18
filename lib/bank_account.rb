@@ -12,11 +12,11 @@ class BankAccount
   end
 
   def deposit(amount, current_date)
-    make_transfer(current_date, credit: amount)
+    return make_transfer(current_date, credit: amount)
   end
   
-  def withdrawal(amount, current_date)
-    make_transfer(current_date, debit: amount)
+  def withdraw(amount, current_date)
+    return make_transfer(current_date, debit: amount)
   end
 
   private
@@ -35,25 +35,22 @@ class BankAccount
   end
   
   def transfer_to_s(transfer)
-    formatted_transfer = [format_date(transfer[:date]) + " || "]
+    transfer_s = "#{format_date(transfer[:date])} || "
     
     if transfer[:debit].zero?
-      formatted_transfer.push(amount_to_s(transfer[:credit]) + " ||")
-    else
-      formatted_transfer.push("|| " + amount_to_s(transfer[:debit]))
+      transfer_s += "#{format_money(transfer[:credit])} ||"
+    elsif transfer[:credit].zero?
+      transfer_s += "|| #{format_money(transfer[:debit])}"
     end
 
-    formatted_transfer.push(" || " + amount_to_s(transfer[:balance]))
-
-    formatted_transfer.join("")
-
+    return transfer_s + " || #{format_money(transfer[:balance])}"
   end
 
-  def amount_to_s(amount)
-    sprintf("%.2f", amount.to_f)
+  def format_money(amount)
+    return sprintf("%.2f", amount.to_f)
   end
 
   def format_date(date)
-    date.strftime("%d/%m/%Y")
+    return date.strftime("%d/%m/%Y")
   end
 end

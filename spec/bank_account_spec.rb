@@ -30,7 +30,7 @@ RSpec.describe BankAccount do
     it "shows up on her bank statement with a total" do
       bank_account = BankAccount.new
       date = Time.new(2023, 01, 14)
-      bank_account.withdrawal(500, date)
+      bank_account.withdraw(500, date)
       
       result = bank_account.statement
       expected_result = "date || credit || debit || balance\n" +
@@ -48,7 +48,7 @@ RSpec.describe BankAccount do
       date2 = Time.new(2023, 01, 13)
       bank_account.deposit(2000, date2)
       date3 = Time.new(2023, 01, 14)
-      bank_account.withdrawal(500, date3)
+      bank_account.withdraw(500, date3)
       
       result = bank_account.statement
       expected_result = "date || credit || debit || balance\n" +
