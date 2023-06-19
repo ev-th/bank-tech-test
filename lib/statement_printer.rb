@@ -3,16 +3,16 @@ class StatementPrinter
     rows = ['date || credit || debit || balance']
     balance = account.starting_balance
 
-    rows += account.transfers.reverse.map do |transfer| 
+    formatted_transfers = account.transfers.map do |transfer|
       balance += transfer[:credit] - transfer[:debit]
       transfer_to_s(transfer, balance)
     end
 
-    rows.join("\n")
+    return (rows + formatted_transfers.reverse).join("\n")
   end
 
   private
-  
+
   def transfer_to_s(transfer, balance)
     
     transfer_s = "#{format_date(transfer[:date])} || "
