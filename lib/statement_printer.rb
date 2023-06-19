@@ -1,4 +1,13 @@
 class StatementPrinter
+  def initialize(io = Kernel)
+    @io = io
+  end
+
+  def print_statement(account)
+    statement = generate_statement(account)
+    @io.puts(statement)
+  end
+
   def generate_statement(account)
     rows = ['date || credit || debit || balance']
     balance = account.starting_balance

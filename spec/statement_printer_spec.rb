@@ -85,4 +85,36 @@ RSpec.describe StatementPrinter do
       expect(statement).to eq expected_result
     end
   end
+  
+  it "generates the statement and then prints it out" do
+    fake_bank_account = double :fake_bank_account, starting_balance: 0
+    allow(fake_bank_account).to receive(:transfers).and_return([
+      {
+        date: Time.new(2023, 1, 10),
+        credit: 1000,
+        debit: 0
+      },
+      {
+        date: Time.new(2023, 1, 13),
+        credit: 2000,
+        debit: 0
+      },
+      {
+        date: Time.new(2023, 1, 14),
+        credit: 0,
+        debit: 500
+      },
+    ])
+
+    fake_io = double :fake_io
+    expect(fake_io).to receive(:puts).with(
+      "date || credit || debit || balance\n" \
+      "14/01/2023 || || 500.00 || 2500.00\n" \
+      "13/01/2023 || 2000.00 || || 3000.00\n" \
+      '10/01/2023 || 1000.00 || || 1000.00'
+    )
+    
+    printer = StatementPrinter.new(fake_io)
+    printer.print_statement(fake_bank_account)
+  end
 end
