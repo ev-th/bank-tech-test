@@ -1,62 +1,75 @@
 require 'bank_account'
+require 'statement_printer'
 
 RSpec.describe BankAccount do
   context 'when the client sets up an account' do
-    xit 'displays an empty bank statement' do
-      bank_account = BankAccount.new
+    it 'prints an empty bank statement' do
+      account = BankAccount.new
 
-      result = bank_account.statement
-      expected_result = 'date || credit || debit || balance'
+      fake_io = double :fake_io
+      expect(fake_io).to receive(:puts).with(
+        'date || credit || debit || balance'
+      )
+      printer = StatementPrinter.new(fake_io)
 
-      expect(result).to eq expected_result
+      printer.print_statement(account)
     end
   end
 
   context 'when the client makes a deposit' do
-    xit 'shows up on her bank statement with a total' do
-      bank_account = BankAccount.new
+    it 'prints the statement including the deposit with a total' do
+      account = BankAccount.new
       date = Time.new(2023, 1, 10)
-      bank_account.deposit(1000, date)
+      account.deposit(1000, date)
 
-      result = bank_account.statement
-      expected_result = "date || credit || debit || balance\n" \
-        '10/01/2023 || 1000.00 || || 1000.00'
+      fake_io = double :fake_io
+      expect(fake_io).to receive(:puts).with(
+        "date || credit || debit || balance\n" \
+          '10/01/2023 || 1000.00 || || 1000.00'
+      )
+      printer = StatementPrinter.new(fake_io)
 
-      expect(result).to eq expected_result
+      printer.print_statement(account)
     end
   end
-
+  
   context 'when the client makes a withdrawal' do
-    xit 'shows up on her bank statement with a total' do
-      bank_account = BankAccount.new
+    it 'prints the statement including the withdrawal with a total' do
+      account = BankAccount.new
       date = Time.new(2023, 1, 14)
-      bank_account.withdraw(500, date)
-
-      result = bank_account.statement
-      expected_result = "date || credit || debit || balance\n" \
+      account.withdraw(500, date)
+    
+      fake_io = double :fake_io
+      expect(fake_io).to receive(:puts).with(
+        "date || credit || debit || balance\n" \
         '14/01/2023 || || 500.00 || -500.00'
-
-      expect(result).to eq expected_result
+      )
+      printer = StatementPrinter.new(fake_io)
+    
+      printer.print_statement(account)
     end
   end
-
+  
   context 'when a client makes multiple transfers' do
-    xit 'shows all the transfers on the bank statement' do
-      bank_account = BankAccount.new
+    it 'prints the statement including all transfers and running totals' do
+      account = BankAccount.new
       date1 = Time.new(2023, 1, 10)
-      bank_account.deposit(1000, date1)
+      account.deposit(1000, date1)
       date2 = Time.new(2023, 1, 13)
-      bank_account.deposit(2000, date2)
+      account.deposit(2000, date2)
       date3 = Time.new(2023, 1, 14)
-      bank_account.withdraw(500, date3)
-
-      result = bank_account.statement
-      expected_result = "date || credit || debit || balance\n" \
+      account.withdraw(500, date3)
+    
+      fake_io = double :fake_io
+      expect(fake_io).to receive(:puts).with(
+        "date || credit || debit || balance\n" \
         "14/01/2023 || || 500.00 || 2500.00\n" \
         "13/01/2023 || 2000.00 || || 3000.00\n" \
         '10/01/2023 || 1000.00 || || 1000.00'
-
-      expect(result).to eq expected_result
+      )
+      printer = StatementPrinter.new(fake_io)
+    
+      printer.print_statement(account)
     end
   end
 end
