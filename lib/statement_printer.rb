@@ -17,13 +17,12 @@ class StatementPrinter
       transfer_to_s(transfer, balance)
     end
 
-    return (rows + formatted_transfers.reverse).join("\n")
+    (rows + formatted_transfers.reverse).join("\n")
   end
 
   private
 
   def transfer_to_s(transfer, balance)
-    
     transfer_s = "#{format_date(transfer[:date])} || "
 
     if transfer[:debit].zero?
