@@ -1,5 +1,8 @@
 class BankAccount
+  attr_reader :starting_balance, :transfers
+
   def initialize
+    @starting_balance = 0
     @balance = 0
     @transfers = []
   end
@@ -27,8 +30,7 @@ class BankAccount
     transfer = {
       date: current_date,
       credit: credit,
-      debit: debit,
-      balance: @balance
+      debit: debit
     }
 
     @transfers.push(transfer)

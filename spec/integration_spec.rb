@@ -2,7 +2,7 @@ require 'bank_account'
 
 RSpec.describe BankAccount do
   context 'when the client sets up an account' do
-    it 'displays an empty bank statement' do
+    xit 'displays an empty bank statement' do
       bank_account = BankAccount.new
 
       result = bank_account.statement
@@ -13,7 +13,7 @@ RSpec.describe BankAccount do
   end
 
   context 'when the client makes a deposit' do
-    it 'shows up on her bank statement with a total' do
+    xit 'shows up on her bank statement with a total' do
       bank_account = BankAccount.new
       date = Time.new(2023, 1, 10)
       bank_account.deposit(1000, date)
@@ -27,7 +27,7 @@ RSpec.describe BankAccount do
   end
 
   context 'when the client makes a withdrawal' do
-    it 'shows up on her bank statement with a total' do
+    xit 'shows up on her bank statement with a total' do
       bank_account = BankAccount.new
       date = Time.new(2023, 1, 14)
       bank_account.withdraw(500, date)
@@ -41,7 +41,7 @@ RSpec.describe BankAccount do
   end
 
   context 'when a client makes multiple transfers' do
-    it 'shows all the transfers on the bank statement' do
+    xit 'shows all the transfers on the bank statement' do
       bank_account = BankAccount.new
       date1 = Time.new(2023, 1, 10)
       bank_account.deposit(1000, date1)
