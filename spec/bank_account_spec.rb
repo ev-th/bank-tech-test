@@ -20,7 +20,7 @@ RSpec.describe BankAccount do
       bank_account = BankAccount.new
       fake_deposit = double :fake_deposit
       bank_account.add_transfer(fake_deposit)
-      
+
       expect(bank_account.transfers).to eq [fake_deposit]
     end
   end

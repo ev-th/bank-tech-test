@@ -14,19 +14,19 @@ RSpec.describe Transfer do
     transfer = Transfer.new(-2000)
     expect(transfer.amount).to eq 2000
   end
-  
+
   it 'is a deposit if passed a positive number' do
     transfer = Transfer.new(700)
     expect(transfer.deposit?).to eq true
     expect(transfer.withdrawal?).to eq false
   end
-  
+
   it 'is a withdrawal if passed a negative number' do
     transfer = Transfer.new(-3)
     expect(transfer.deposit?).to eq false
     expect(transfer.withdrawal?).to eq true
   end
-  
+
   it 'takes a Time object to record the date of the the transfer' do
     timestamp = Time.new(2023, 1, 10)
     transfer = Transfer.new(100, timestamp)
