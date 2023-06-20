@@ -11,36 +11,31 @@ class StatementPrinter
   def generate_statement(account)
     headers = ['date || credit || debit || balance']
     transfers = format_transfers(account.transfers, account.starting_balance)
-    (headers + transfers.reverse).join("\n")
+    (headers + transfers).join("\n")
   end
 
   private
 
-  def format_transfers(transfers, starting_balance)
-    running_total = starting_balance
-    return transfers.map do |transfer|
-      
-      running_total += transfer.amount if transfer.deposit?
-      running_total -= transfer.amount if transfer.withdrawal?
-      format_transfer(transfer, running_total)
+  def format_transfers(transfers, balance)
+    formatted_transfers = transfers.map do |transfer|
+      balance += transfer.amount if transfer.deposit?
+      balance -= transfer.amount if transfer.withdrawal?
+      format_transfer(transfer, balance)
     end
+    formatted_transfers.reverse
   end
 
-  def format_transfer(transfer, updated_balance)
-    credit = transfer.deposit? ? transfer.amount : 0
-    debit = transfer.withdrawal? ? transfer.amount : 0
-
+  def format_transfer(transfer, balance)
     row = [
       format_date(transfer.timestamp),
-      credit.zero? ? "" : format_money(credit),
-      debit.zero? ? "" : format_money(debit),
-      format_money(updated_balance)
+      transfer.deposit? ? format_money(transfer.amount) : "",
+      transfer.withdrawal? ? format_money(transfer.amount) : "",
+      format_money(balance)
     ]
-
     join_row(row)
   end
 
-  def join_row(row)
+  def join_row(row)    
     formatted_elements = row.map.with_index do |element, i|
       if i.zero?
         "#{element} "
