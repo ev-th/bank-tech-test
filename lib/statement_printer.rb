@@ -9,20 +9,22 @@ class StatementPrinter
   end
 
   def generate_statement(account)
-    rows = ['date || credit || debit || balance']
-    balance = account.starting_balance
-
-    formatted_transfers = account.transfers.map do |transfer|
-      balance += transfer[:credit] - transfer[:debit]
-      transfer_to_s(transfer, balance)
-    end
-
-    (rows + formatted_transfers.reverse).join("\n")
+    headers = ['date || credit || debit || balance']
+    transfers = format_transfers(account.transfers, account.starting_balance)
+    (headers + transfers.reverse).join("\n")
   end
 
   private
 
-  def transfer_to_s(transfer, balance)
+  def format_transfers(transfers, starting_balance)
+    running_total = starting_balance
+    return transfers.map do |transfer|
+      running_total += transfer[:credit] - transfer[:debit]
+      format_transfer(transfer, running_total)
+    end
+  end
+
+  def format_transfer(transfer, updated_balance)
     transfer_s = "#{format_date(transfer[:date])} || "
 
     if transfer[:debit].zero?
@@ -31,7 +33,7 @@ class StatementPrinter
       transfer_s += "|| #{format_money(transfer[:debit])}"
     end
 
-    transfer_s + " || #{format_money(balance)}"
+    transfer_s + " || #{format_money(updated_balance)}"
   end
 
   def format_money(amount)
