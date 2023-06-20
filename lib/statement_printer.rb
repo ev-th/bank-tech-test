@@ -25,15 +25,16 @@ class StatementPrinter
   end
 
   def format_transfer(transfer, updated_balance)
-    transfer_s = "#{format_date(transfer[:date])} || "
+    columns = ["#{format_date(transfer[:date])} || "]
 
     if transfer[:debit].zero?
-      transfer_s += "#{format_money(transfer[:credit])} ||"
+      columns.push "#{format_money(transfer[:credit])} ||"
     elsif transfer[:credit].zero?
-      transfer_s += "|| #{format_money(transfer[:debit])}"
+      columns.push "|| #{format_money(transfer[:debit])}"
     end
 
-    transfer_s + " || #{format_money(updated_balance)}"
+    columns.push " || #{format_money(updated_balance)}"
+    columns.join
   end
 
   def format_money(amount)
