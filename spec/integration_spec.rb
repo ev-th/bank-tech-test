@@ -3,7 +3,7 @@ require 'statement_printer'
 
 RSpec.describe BankAccount do
   context 'when the client sets up an account' do
-    xit 'prints an empty bank statement' do
+    it 'prints an empty bank statement' do
       account = BankAccount.new
 
       fake_io = double :fake_io
@@ -17,10 +17,11 @@ RSpec.describe BankAccount do
   end
 
   context 'when the client makes a deposit' do
-    xit 'prints the statement including the deposit with a total' do
+    it 'prints the statement including the deposit with a total' do
       account = BankAccount.new
       date = Time.new(2023, 1, 10)
-      account.deposit(1000, date)
+      deposit = Transfer.new(1000, date)
+      account.add_transfer(deposit)
 
       fake_io = double :fake_io
       expect(fake_io).to receive(:puts).with(
@@ -34,10 +35,11 @@ RSpec.describe BankAccount do
   end
   
   context 'when the client makes a withdrawal' do
-    xit 'prints the statement including the withdrawal with a total' do
+    it 'prints the statement including the withdrawal with a total' do
       account = BankAccount.new
       date = Time.new(2023, 1, 14)
-      account.withdraw(500, date)
+      withdrawal = Transfer.new(-500, date)
+      account.add_transfer(withdrawal)
     
       fake_io = double :fake_io
       expect(fake_io).to receive(:puts).with(
@@ -51,14 +53,20 @@ RSpec.describe BankAccount do
   end
   
   context 'when a client makes multiple transfers' do
-    xit 'prints the statement including all transfers and running totals' do
+    it 'prints the statement including all transfers and running totals' do
       account = BankAccount.new
+
       date1 = Time.new(2023, 1, 10)
-      account.deposit(1000, date1)
+      transfer1 = Transfer.new(1000, date1)
+      account.add_transfer(transfer1)
+
       date2 = Time.new(2023, 1, 13)
-      account.deposit(2000, date2)
+      transfer2 = Transfer.new(2000, date2)
+      account.add_transfer(transfer2)
+
       date3 = Time.new(2023, 1, 14)
-      account.withdraw(500, date3)
+      transfer3 = Transfer.new(-500, date3)
+      account.add_transfer(transfer3)
     
       fake_io = double :fake_io
       expect(fake_io).to receive(:puts).with(
