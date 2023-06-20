@@ -19,18 +19,20 @@ class StatementPrinter
   def format_transfers(transfers, starting_balance)
     running_total = starting_balance
     return transfers.map do |transfer|
-      running_total += transfer[:credit] - transfer[:debit]
+      
+      running_total += transfer.amount if transfer.deposit?
+      running_total -= transfer.amount if transfer.withdrawal?
       format_transfer(transfer, running_total)
     end
   end
 
   def format_transfer(transfer, updated_balance)
-    columns = ["#{format_date(transfer[:date])} || "]
+    columns = ["#{format_date(transfer.timestamp)} || "]
 
-    if transfer[:debit].zero?
-      columns.push "#{format_money(transfer[:credit])} ||"
-    elsif transfer[:credit].zero?
-      columns.push "|| #{format_money(transfer[:debit])}"
+    if transfer.deposit?
+      columns.push "#{format_money(transfer.amount)} ||"
+    elsif transfer.withdrawal?
+      columns.push "|| #{format_money(transfer.amount)}"
     end
 
     columns.push " || #{format_money(updated_balance)}"

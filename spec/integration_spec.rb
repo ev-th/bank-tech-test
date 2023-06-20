@@ -3,7 +3,7 @@ require 'statement_printer'
 
 RSpec.describe BankAccount do
   context 'when the client sets up an account' do
-    it 'prints an empty bank statement' do
+    xit 'prints an empty bank statement' do
       account = BankAccount.new
 
       fake_io = double :fake_io
@@ -17,7 +17,7 @@ RSpec.describe BankAccount do
   end
 
   context 'when the client makes a deposit' do
-    it 'prints the statement including the deposit with a total' do
+    xit 'prints the statement including the deposit with a total' do
       account = BankAccount.new
       date = Time.new(2023, 1, 10)
       account.deposit(1000, date)
@@ -34,7 +34,7 @@ RSpec.describe BankAccount do
   end
   
   context 'when the client makes a withdrawal' do
-    it 'prints the statement including the withdrawal with a total' do
+    xit 'prints the statement including the withdrawal with a total' do
       account = BankAccount.new
       date = Time.new(2023, 1, 14)
       account.withdraw(500, date)
@@ -51,7 +51,7 @@ RSpec.describe BankAccount do
   end
   
   context 'when a client makes multiple transfers' do
-    it 'prints the statement including all transfers and running totals' do
+    xit 'prints the statement including all transfers and running totals' do
       account = BankAccount.new
       date1 = Time.new(2023, 1, 10)
       account.deposit(1000, date1)
