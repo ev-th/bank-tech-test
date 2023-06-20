@@ -6,23 +6,7 @@ class BankAccount
     @transfers = []
   end
 
-  def deposit(amount, current_date = Time.now)
-    make_transfer(current_date, credit: amount)
-  end
-
-  def withdraw(amount, current_date = Time.now)
-    make_transfer(current_date, debit: amount)
-  end
-
   def add_transfer(transfer)
     @transfers.push transfer
-  end
-
-  private
-
-  def make_transfer(current_date, credit: 0, debit: 0)
-    @transfers.push(
-      { date: current_date, credit: credit, debit: debit }
-    )
   end
 end
