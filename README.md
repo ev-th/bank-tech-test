@@ -16,20 +16,25 @@ rspec
 
 You can interact with with program in IRB
 ```ruby
+# Require the files.
+require_relative 'lib/transfer'
 require_relative 'lib/bank_account'
+require_relative 'lib/statement_printer'
 
 # Initialize a new BankAccount object.
 account = BankAccount.new
 
-# Make a deposit
-account.deposit(1000)
+# To make a deposit, add a Transfer object with a positive amount.
+transfer1 = Transfer.new(1000)
+account.add_transfer(transfer1)
 
-# Make a withdrawal
-account.withdraw(500)
+# To make a withdrawal, add a Transfer object with a negative amount.
+transfer2 = Transfer.new(-500)
+account.add_transfer(transfer2)
 
-# Print out a statement
-statement = account.statement
-puts(statement)
+# Use a StatementPrinter object to print a statement for the account.
+printer = StatementPrinter.new
+printer.print_statement(account)
 ```
 
 ## Demonstration
