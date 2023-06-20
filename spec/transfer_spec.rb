@@ -1,6 +1,10 @@
 require 'transfer'
 
 RSpec.describe Transfer do
+  it 'fails to initialize with 0' do
+    expect { Transfer.new(0) }.to raise_error 'The transfer amount cannot be 0'
+  end
+
   it 'stores the money transferred by a deposit' do
     transfer = Transfer.new(100)
     expect(transfer.amount).to eq 100
@@ -23,7 +27,10 @@ RSpec.describe Transfer do
     expect(transfer.withdrawal?).to eq true
   end
   
-  it 'fails to initialize with 0' do
-    expect { Transfer.new(0) }.to raise_error 'The transfer amount cannot be 0'
+  it 'takes a Time object to record the date of the the transfer' do
+    timestamp = Time.new(2023, 1, 10)
+    transfer = Transfer.new(100, timestamp)
+
+    expect(transfer.timestamp).to eq timestamp
   end
 end
