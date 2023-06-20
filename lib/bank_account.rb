@@ -14,6 +14,10 @@ class BankAccount
     make_transfer(current_date, debit: amount)
   end
 
+  def add_transfer(transfer)
+    @transfers.push transfer
+  end
+
   private
 
   def make_transfer(current_date, credit: 0, debit: 0)
