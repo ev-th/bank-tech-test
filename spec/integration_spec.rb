@@ -1,7 +1,8 @@
 require 'bank_account'
 require 'statement_printer'
+require 'transfer'
 
-RSpec.describe BankAccount do
+RSpec.describe "integration" do
   context 'when the client sets up an account' do
     it 'prints an empty bank statement' do
       account = BankAccount.new
