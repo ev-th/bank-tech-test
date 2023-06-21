@@ -17,7 +17,7 @@ RSpec.describe BankAccount do
 
   let(:account) {
     fake_time_class = double :fake_time_class, now: fake_time_object
-    BankAccount.new(transfer: fake_transfer_class, time: fake_time_class)
+    described_class.new(transfer: fake_transfer_class, time: fake_time_class)
   }
 
   context 'when the client sets up an account' do

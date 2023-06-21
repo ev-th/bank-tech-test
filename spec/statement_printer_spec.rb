@@ -3,7 +3,7 @@ require 'statement_printer'
 RSpec.describe StatementPrinter do
   let(:fake_io) { double :fake_io }
 
-  let(:printer) { printer = StatementPrinter.new(fake_io) }
+  let(:printer) { printer = described_class.new(fake_io) }
   
   let(:fake_bank_account) { double :fake_bank_account, starting_balance: 0 }
   
