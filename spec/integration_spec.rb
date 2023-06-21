@@ -19,10 +19,10 @@ RSpec.describe 'integration' do
 
   context 'when the client makes a deposit' do
     it 'prints the statement including the deposit with a total' do
-      account = BankAccount.new
-      date = Time.new(2023, 1, 10)
-      deposit = Transfer.new(1000, date)
-      account.add_transfer(deposit)
+      timestamp = Time.new(2023, 1, 10)
+      fake_time_class = double :fake_time_class, now: timestamp
+      account = BankAccount.new(time: fake_time_class)
+      account.deposit(1000)
 
       fake_io = double :fake_io
       expect(fake_io).to receive(:puts).with(
@@ -37,10 +37,11 @@ RSpec.describe 'integration' do
 
   context 'when the client makes a withdrawal' do
     it 'prints the statement including the withdrawal with a total' do
-      account = BankAccount.new
-      date = Time.new(2023, 1, 14)
-      withdrawal = Transfer.new(-500, date)
-      account.add_transfer(withdrawal)
+      timestamp = Time.new(2023, 1, 14)
+      fake_time_class = double :fake_time_class, now: timestamp
+
+      account = BankAccount.new(time: fake_time_class)
+      account.withdraw(500)
 
       fake_io = double :fake_io
       expect(fake_io).to receive(:puts).with(
@@ -55,19 +56,16 @@ RSpec.describe 'integration' do
 
   context 'when a client makes multiple transfers' do
     it 'prints the statement including all transfers and running totals' do
-      account = BankAccount.new
+      timestamp1 = Time.new(2023, 1, 10)
+      timestamp2 = Time.new(2023, 1, 13)
+      timestamp3 = Time.new(2023, 1, 14)
+      fake_time_class = double :fake_time_class
+      allow(fake_time_class).to receive(:now).and_return(timestamp1, timestamp2, timestamp3)
 
-      date1 = Time.new(2023, 1, 10)
-      transfer1 = Transfer.new(1000, date1)
-      account.add_transfer(transfer1)
-
-      date2 = Time.new(2023, 1, 13)
-      transfer2 = Transfer.new(2000, date2)
-      account.add_transfer(transfer2)
-
-      date3 = Time.new(2023, 1, 14)
-      transfer3 = Transfer.new(-500, date3)
-      account.add_transfer(transfer3)
+      account = BankAccount.new(time: fake_time_class)
+      account.deposit(1000)
+      account.deposit(2000)
+      account.withdraw(500)
 
       fake_io = double :fake_io
       expect(fake_io).to receive(:puts).with(
