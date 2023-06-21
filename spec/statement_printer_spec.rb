@@ -1,10 +1,6 @@
 require 'statement_printer'
 
 RSpec.describe StatementPrinter do
-  let(:fake_io) { double :fake_io }
-
-  let(:printer) { printer = described_class.new(fake_io) }
-  
   let(:fake_bank_account) { double :fake_bank_account, starting_balance: 0 }
   
   let(:fake_transfer1) {
@@ -24,7 +20,7 @@ RSpec.describe StatementPrinter do
       amount: 2000
     }
   }
-
+  
   let(:fake_transfer3) {
     double :fake_transfer3, {
       deposit?: false,
@@ -33,6 +29,10 @@ RSpec.describe StatementPrinter do
       amount: -500
     }
   }
+
+  let(:fake_io) { double :fake_io }
+  
+  subject(:printer) { printer = described_class.new(fake_io) }
 
   context 'when the account has no transfers' do
     it 'generates an empty bank statement' do

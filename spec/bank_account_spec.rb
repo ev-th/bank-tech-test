@@ -15,7 +15,7 @@ RSpec.describe BankAccount do
     fake_transfer_class
   }
 
-  let(:account) {
+  subject(:account) {
     fake_time_class = double :fake_time_class, now: fake_time_object
     described_class.new(transfer: fake_transfer_class, time: fake_time_class)
   }
