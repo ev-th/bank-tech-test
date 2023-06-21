@@ -18,8 +18,7 @@ class StatementPrinter
 
   def format_transfers(transfers, balance)
     formatted_transfers = transfers.map do |transfer|
-      balance += transfer.amount if transfer.deposit?
-      balance -= transfer.amount if transfer.withdrawal?
+      balance += transfer.amount
       format_transfer(transfer, balance)
     end
     formatted_transfers.reverse
@@ -29,7 +28,7 @@ class StatementPrinter
     row = [
       format_date(transfer.timestamp),
       transfer.deposit? ? format_money(transfer.amount) : '',
-      transfer.withdrawal? ? format_money(transfer.amount) : '',
+      transfer.withdrawal? ? format_money(transfer.amount.abs) : '',
       format_money(balance)
     ]
     join_row(row)

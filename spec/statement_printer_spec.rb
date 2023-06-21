@@ -43,7 +43,7 @@ RSpec.describe StatementPrinter do
         deposit?: false,
         withdrawal?: true,
         timestamp: Time.new(2023, 1, 14),
-        amount: 500
+        amount: -500
       }
       fake_deposit = double :fake_deposit, stubs
 
@@ -82,7 +82,7 @@ RSpec.describe StatementPrinter do
         deposit?: false,
         withdrawal?: true,
         timestamp: Time.new(2023, 1, 14),
-        amount: 500
+        amount: -500
       }
       fake_deposit3 = double :fake_deposit3, fake_deposit_stubs3
 
@@ -123,7 +123,7 @@ RSpec.describe StatementPrinter do
       deposit?: false,
       withdrawal?: true,
       timestamp: Time.new(2023, 1, 14),
-      amount: 500
+      amount: -500
     }
     fake_deposit3 = double :fake_deposit3, fake_deposit_stubs3
 

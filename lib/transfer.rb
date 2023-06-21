@@ -4,16 +4,15 @@ class Transfer
   def initialize(amount, timestamp = Time.now)
     raise 'The transfer amount cannot be 0' if amount.zero?
 
-    @type = amount.positive? ? 'deposit' : 'withdrawal'
-    @amount = amount.abs
+    @amount = amount
     @timestamp = timestamp
   end
 
   def deposit?
-    @type == 'deposit'
+    @amount.positive?
   end
 
   def withdrawal?
-    @type == 'withdrawal'
+    @amount.negative?
   end
 end
