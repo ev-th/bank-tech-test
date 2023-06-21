@@ -4,10 +4,11 @@ class BankAccount
   attr_reader :starting_balance, :transfers
 
   def initialize(transfer: Transfer, time: Time)
-    @starting_balance = 0
     @transfer = transfer
-    @transfers = []
     @time = time
+    
+    @starting_balance = 0
+    @transfers = []
   end
   
   def deposit(amount)

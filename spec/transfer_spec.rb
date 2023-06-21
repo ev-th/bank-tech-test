@@ -30,7 +30,6 @@ RSpec.describe Transfer do
   it 'takes a Time object to record the date of the the transfer' do
     timestamp = Time.new(2023, 1, 10)
     transfer = Transfer.new(100, timestamp)
-
     expect(transfer.timestamp).to eq timestamp
   end
 end
