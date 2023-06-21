@@ -1,6 +1,7 @@
 class StatementPrinter
   def initialize(io = Kernel)
     @io = io
+    @header_row = 'date || credit || debit || balance'
   end
 
   def print_statement(account)
@@ -9,44 +10,30 @@ class StatementPrinter
   end
 
   def generate_statement(account)
-    headers = ['date || credit || debit || balance']
     transfers = format_transfers(account.transfers, account.starting_balance)
-    (headers + transfers).join("\n")
+    transfers.reverse.unshift(@header_row).join("\n")
   end
 
   private
 
   def format_transfers(transfers, balance)
-    formatted_transfers = transfers.map do |transfer|
+    transfers.map do |transfer|
       balance += transfer.amount
       format_transfer(transfer, balance)
     end
-    formatted_transfers.reverse
   end
-
+  
   def format_transfer(transfer, balance)
-    row = [
-      format_date(transfer.timestamp),
-      transfer.deposit? ? format_money(transfer.amount) : '',
-      transfer.withdrawal? ? format_money(transfer.amount.abs) : '',
-      format_money(balance)
-    ]
-    join_row(row)
+    date = format_date(transfer.timestamp)
+    credit = transfer.deposit? ? format_money(transfer.amount) : nil
+    debit = transfer.withdrawal? ? format_money(transfer.amount.abs) : nil
+    total_balance = format_money(balance)
+    join_transfer_array([date, credit, debit, total_balance])
   end
 
-  def join_row(row)
-    formatted_elements = row.map.with_index do |element, i|
-      if i.zero?
-        "#{element} "
-      elsif i == row.length - 1
-        " #{element}"
-      elsif element.empty?
-        ' '
-      else
-        " #{element} "
-      end
-    end
-    formatted_elements.join('||')
+  def join_transfer_array(row)
+    amounts = row[1..-2].map { |amount| amount.nil? ? ' ' : " #{amount} " }
+    ["#{row[0]} ", *amounts, " #{row[-1]}"].join('||')
   end
 
   def format_date(date)

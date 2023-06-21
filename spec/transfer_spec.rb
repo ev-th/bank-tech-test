@@ -12,7 +12,7 @@ RSpec.describe Transfer do
 
   it 'stores the money transferred by a withdrawal' do
     transfer = Transfer.new(-2000)
-    expect(transfer.amount).to eq -2000
+    expect(transfer.amount).to eq(-2000)
   end
 
   it 'is a deposit if the amount is positive' do
