@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative './transfer'
 
 class BankAccount
@@ -6,19 +8,19 @@ class BankAccount
   def initialize(transfer: Transfer, time: Time)
     @transfer = transfer
     @time = time
-    
+
     @starting_balance = 0
     @transfers = []
   end
-  
+
   def deposit(amount)
     add_transfer(amount)
   end
-  
+
   def withdraw(amount)
     add_transfer(-amount)
   end
-  
+
   private
 
   def add_transfer(amount)

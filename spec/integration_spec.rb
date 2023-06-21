@@ -1,11 +1,13 @@
+# frozen_string_literal: true
+
 require 'bank_account'
 require 'statement_printer'
 require 'transfer'
 
 RSpec.describe 'integration' do
-  let(:fake_io) { double :fake_io } 
-  
-  let(:account) {
+  let(:fake_io) { double :fake_io }
+
+  let(:account) do
     fake_time_class = double :fake_time_class
     allow(fake_time_class).to receive(:now).and_return(
       Time.new(2023, 1, 10),
@@ -13,12 +15,12 @@ RSpec.describe 'integration' do
       Time.new(2023, 1, 14)
     )
     BankAccount.new(time: fake_time_class)
-  }
-  
-  let(:print_statement) {
+  end
+
+  let(:print_statement) do
     printer = StatementPrinter.new(fake_io)
     printer.print_statement(account)
-  }
+  end
 
   context 'when the client sets up an account' do
     it 'prints an empty bank statement' do

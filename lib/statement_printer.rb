@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatementPrinter
   def initialize(io = Kernel)
     @io = io
@@ -22,7 +24,7 @@ class StatementPrinter
       format_transfer(transfer, balance)
     end
   end
-  
+
   def format_transfer(transfer, balance)
     date = format_date(transfer.timestamp)
     credit = transfer.deposit? ? format_money(transfer.amount) : nil
