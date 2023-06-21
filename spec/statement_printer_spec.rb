@@ -46,7 +46,9 @@ RSpec.describe StatementPrinter do
 
   context 'when the account has a deposit' do
     it 'generates a bank statement with the deposit and current total' do
-      allow(fake_bank_account).to receive(:transfers).and_return([fake_transfer1])
+      allow(fake_bank_account).to receive(:transfers).and_return(
+        [fake_transfer1]
+      )
 
       expect(printer.generate_statement(fake_bank_account)).to eq (
         "date || credit || debit || balance\n" \
@@ -57,7 +59,9 @@ RSpec.describe StatementPrinter do
 
   context 'when the account has a withdrawal' do
     it 'generates a bank statement with the withdrawal and current total' do
-      allow(fake_bank_account).to receive(:transfers).and_return([fake_transfer3])
+      allow(fake_bank_account).to receive(:transfers).and_return(
+        [fake_transfer3]
+      )
 
       expect(printer.generate_statement(fake_bank_account)).to eq (
         "date || credit || debit || balance\n" \
@@ -68,7 +72,9 @@ RSpec.describe StatementPrinter do
 
   context 'when the account has multiple transfers' do
     it 'generates a bank statement with all the transfers' do
-      allow(fake_bank_account).to receive(:transfers).and_return([fake_transfer1, fake_transfer2, fake_transfer3])
+      allow(fake_bank_account).to receive(:transfers).and_return(
+        [fake_transfer1, fake_transfer2, fake_transfer3]
+      )
 
       expect(printer.generate_statement(fake_bank_account)).to eq (
         "date || credit || debit || balance\n" \
@@ -80,7 +86,9 @@ RSpec.describe StatementPrinter do
   end
 
   it 'generates the statement and then prints it out' do
-    allow(fake_bank_account).to receive(:transfers).and_return([fake_transfer1, fake_transfer2, fake_transfer3])
+    allow(fake_bank_account).to receive(:transfers).and_return(
+      [fake_transfer1, fake_transfer2, fake_transfer3]
+    )
 
     expect(fake_io).to receive(:puts).with(
       "date || credit || debit || balance\n" \

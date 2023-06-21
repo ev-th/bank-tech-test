@@ -9,7 +9,9 @@ RSpec.describe BankAccount do
 
   let(:fake_transfer_class) {
     fake_transfer_class = double :fake_transfer_class
-    allow(fake_transfer_class).to receive(:new).and_return(transfers[0], transfers[1], transfers[2])
+    allow(fake_transfer_class).to receive(:new).and_return(
+      transfers[0], transfers[1], transfers[2]
+    )
     fake_transfer_class
   }
 
