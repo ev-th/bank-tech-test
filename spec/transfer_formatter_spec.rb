@@ -1,7 +1,7 @@
 require 'transfer_formatter'
 
 RSpec.describe TransferFormatter do
-  let(:formatter) { TransferFormatter.new }
+  let(:formatter) { described_class.new }
 
   let(:fake_transfer1) do
     double :fake_transfer1, {
@@ -49,7 +49,7 @@ RSpec.describe TransferFormatter do
   describe '#format_many' do
     it 'formats many transfers into a two-dimensional array, ordered chronologically' do
       transfers = [fake_transfer1, fake_transfer2, fake_transfer3]
-      
+
       result = formatter.format_many(transfers, 0)
       expected_result = [
         ['10/01/2023', '1000.00', nil, '1000.00'],

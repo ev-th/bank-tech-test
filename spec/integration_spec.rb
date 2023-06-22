@@ -18,7 +18,7 @@ RSpec.describe 'integration' do
   end
 
   let(:print_statement) do
-    printer = StatementPrinter.new(fake_io)
+    printer = StatementPrinter.new(io: fake_io)
     printer.print_statement(account)
   end
 

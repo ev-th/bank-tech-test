@@ -3,7 +3,7 @@
 require_relative './transfer_formatter'
 
 class StatementPrinter
-  def initialize(io = Kernel, transfer_formatter = TransferFormatter.new)
+  def initialize(io: Kernel, transfer_formatter: TransferFormatter.new)
     @io = io
     @formatter = transfer_formatter
   end
