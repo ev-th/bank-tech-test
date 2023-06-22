@@ -5,39 +5,27 @@ class TransferFormatter
     @field_names = ['date', 'credit', 'debit', 'balance']
   end
 
-  def format_transfer(transfer, balance)
-    date = format_date(transfer.timestamp)
-    credit = transfer.deposit? ? format_money(transfer.amount) : nil
-    debit = transfer.withdrawal? ? format_money(transfer.amount.abs) : nil
-    total_balance = format_money(balance)
-    [date, credit, debit, total_balance]
-  end
-  
   def format_one(transfer, balance)
-    date = format_date(transfer.timestamp)
-    credit = transfer.deposit? ? format_money(transfer.amount) : nil
-    debit = transfer.withdrawal? ? format_money(transfer.amount.abs) : nil
-    total_balance = format_money(balance)
-    [date, credit, debit, total_balance]
+    [
+      format_date(transfer.timestamp),
+      transfer.deposit? ? format_money(transfer.amount) : nil,
+      transfer.withdrawal? ? format_money(transfer.amount.abs) : nil,
+      format_money(balance)
+    ]
   end
 
-  def format_many(transfers, initial_balance)
-    running_total_balance = initial_balance
-    sorted_transfers = sort_transfers(transfers)
+  def format_many(transfers, balance)
+    sorted_transfers = transfers.sort_by { |transfer| transfer.timestamp }
     sorted_transfers.map do |transfer|
-      running_total_balance += transfer.amount
-      format_one(transfer, running_total_balance)
+      balance += transfer.amount
+      format_one(transfer, balance)
     end
   end
 
   private
 
-  def sort_transfers(transfers)
-    transfers.sort_by { |transfer| transfer.timestamp }
-  end
-
-  def format_date(date)
-    date.strftime('%d/%m/%Y')
+  def format_date(timestamp)
+    timestamp.strftime('%d/%m/%Y')
   end
 
   def format_money(amount)
