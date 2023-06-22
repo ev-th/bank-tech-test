@@ -17,20 +17,17 @@ rspec
 You can interact with with program in IRB
 ```ruby
 # Require the files.
-require_relative 'lib/transfer'
 require_relative 'lib/bank_account'
 require_relative 'lib/statement_printer'
 
 # Initialize a new BankAccount object.
 account = BankAccount.new
 
-# To make a deposit, add a Transfer object with a positive amount.
-transfer1 = Transfer.new(1000)
-account.add_transfer(transfer1)
+# Make a deposit.
+account.deposit(1000)
 
-# To make a withdrawal, add a Transfer object with a negative amount.
-transfer2 = Transfer.new(-500)
-account.add_transfer(transfer2)
+# Make a withdrawal.
+account.withdraw(500)
 
 # Use a StatementPrinter object to print a statement for the account.
 printer = StatementPrinter.new
@@ -48,7 +45,10 @@ It made sense to me to have a BankAccount class that would hold some state about
 I approached this program test first, ensuring to implement all the requirements, no more or less. I started by writing the simplest feature test for returning a printable statement before deposits or withdrawals were made, then followed red/green/refactor steps. I ensured the tests passed in the simplest way I could, and didn't refactor the code until required to by further tests. I then made tests for a single deposit, a single withdrawal, and finally for a combination of both. With each new test, I implemented the code to pass it before moving on to the next test.
 
 ### Refactor
-Once the requirements were covered by the tests and the tests were passing, I refactored my code for DRYness and extracted some functionality into private methods so each method has a single responsibility. I ensured that only the 'statement', 'deposit' and 'withdraw' methods were public in order to satisfy the requirements. I changed a few method and variable names to be more descriptive and made some changes to reduce my Rubocop offenses.
+At this point everything was inside one class, which had multiple responsibilities.
+It made sense to refactor the transfer hashes into their own Transfer class, which could hold the amount and the timestamp. This way I could also give them a method to check whether it was a deposit or withdrawal.
+The BankAccount class was also handling formatting for printing on top of transfer logic. Therefore, I extracted printing into a StatementPrinter class with a print_statement method that takes the account as an argument.
+This process of refactoring brought up a new problem: StatementPrinter was now using the Transfer objects directly, when ideally it should only be using the Account API. Therefore, I extracted some of the formatting logic into the TransferFormatter class, which is passed to StatementPrinter at construction. This new class's responsibility is to format Transfer objects into an array of strings that can be easily manipulated by StatementPrinter.
 
 The following is copied from the README of the original tech test specifications:
 
