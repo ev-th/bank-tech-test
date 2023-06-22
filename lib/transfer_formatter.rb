@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 class TransferFormatter
   attr_reader :field_names
 
   def initialize
-    @field_names = ['date', 'credit', 'debit', 'balance']
+    @field_names = %w[date credit debit balance]
   end
 
   def format_one(transfer, balance)
@@ -15,7 +17,7 @@ class TransferFormatter
   end
 
   def format_many(transfers, balance)
-    sorted_transfers = transfers.sort_by { |transfer| transfer.timestamp }
+    sorted_transfers = transfers.sort_by(&:timestamp)
     sorted_transfers.map do |transfer|
       balance += transfer.amount
       format_one(transfer, balance)

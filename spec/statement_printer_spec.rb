@@ -7,7 +7,7 @@ RSpec.describe StatementPrinter do
 
   let(:fake_formatter) do
     double :fake_formatter, {
-      field_names: ['date', 'credit', 'debit', 'balance']
+      field_names: %w[date credit debit balance]
     }
   end
 
@@ -32,7 +32,7 @@ RSpec.describe StatementPrinter do
       )
     end
   end
-  
+
   context 'when the account has a deposit' do
     it 'generates a bank statement with the deposit and current total' do
       allow(fake_bank_account).to receive(:transfers).and_return(

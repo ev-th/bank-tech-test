@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'transfer_formatter'
 
 RSpec.describe TransferFormatter do
@@ -31,15 +33,15 @@ RSpec.describe TransferFormatter do
   end
 
   it 'has fields accessible from outside the class' do
-    expect(formatter.field_names).to eq ['date', 'credit', 'debit', 'balance']
+    expect(formatter.field_names).to eq %w[date credit debit balance]
   end
-  
+
   describe '#format_one' do
     it 'formats a deposit with a balance into an array' do
       result = formatter.format_one(fake_transfer1, 300)
       expect(result).to eq(['10/01/2023', '1000.00', nil, '300.00'])
     end
-    
+
     it 'formats a withdrawal with a balance into an array' do
       result = formatter.format_one(fake_transfer2, 5000)
       expect(result).to eq(['14/01/2023', nil, '500.00', '5000.00'])

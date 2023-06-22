@@ -23,7 +23,7 @@ class StatementPrinter
 
   def format_transfers(transfers, starting_balance)
     transfers_array = @formatter.format_many(transfers, starting_balance)
-    transfers_array.map {|transfer| join_transfer_array(transfer)}.reverse
+    transfers_array.map { |transfer| join_transfer_array(transfer) }.reverse
   end
 
   def join_transfer_array(row)
