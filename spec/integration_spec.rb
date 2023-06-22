@@ -2,11 +2,8 @@
 
 require 'bank_account'
 require 'statement_printer'
-require 'transfer'
 
 RSpec.describe 'integration' do
-  let(:fake_io) { double :fake_io }
-
   let(:account) do
     fake_time_class = double :fake_time_class
     allow(fake_time_class).to receive(:now).and_return(
@@ -17,17 +14,16 @@ RSpec.describe 'integration' do
     BankAccount.new(time: fake_time_class)
   end
 
-  let(:print_statement) do
-    printer = StatementPrinter.new(io: fake_io)
-    printer.print_statement(account)
-  end
+  let(:fake_io) { double :fake_io }
+
+  let(:printer) { StatementPrinter.new(io: fake_io) }
 
   context 'when the client sets up an account' do
     it 'prints an empty bank statement' do
       expect(fake_io).to receive(:puts).with(
         'date || credit || debit || balance'
       )
-      print_statement
+      printer.print_statement(account)
     end
   end
 
@@ -39,7 +35,7 @@ RSpec.describe 'integration' do
         "date || credit || debit || balance\n" \
           '10/01/2023 || 1000.00 || || 1000.00'
       )
-      print_statement
+      printer.print_statement(account)
     end
   end
 
@@ -51,7 +47,7 @@ RSpec.describe 'integration' do
         "date || credit || debit || balance\n" \
         '10/01/2023 || || 500.00 || -500.00'
       )
-      print_statement
+      printer.print_statement(account)
     end
   end
 
@@ -67,7 +63,7 @@ RSpec.describe 'integration' do
         "13/01/2023 || 2000.00 || || 3000.00\n" \
         '10/01/2023 || 1000.00 || || 1000.00'
       )
-      print_statement
+      printer.print_statement(account)
     end
   end
 end
