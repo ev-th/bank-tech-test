@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
+require_relative './transfer_formatter'
+
 class StatementPrinter
-  def initialize(io = Kernel)
+  def initialize(io = Kernel, transfer_formatter = TransferFormatter.new)
     @io = io
-    @header_row = 'date || credit || debit || balance'
+    @transfer_formatter = transfer_formatter
   end
 
   def print_statement(account)
@@ -13,7 +15,7 @@ class StatementPrinter
 
   def generate_statement(account)
     transfers = format_transfers(account.transfers, account.starting_balance)
-    transfers.reverse.unshift(@header_row).join("\n")
+    transfers.reverse.unshift(@transfer_formatter.fields.join(' || ')).join("\n")
   end
 
   private
@@ -21,28 +23,13 @@ class StatementPrinter
   def format_transfers(transfers, balance)
     transfers.map do |transfer|
       balance += transfer.amount
-      format_transfer(transfer, balance)
+      transfer_array = @transfer_formatter.format_transfer(transfer, balance)
+      join_transfer_array(transfer_array)
     end
   end
 
-  def format_transfer(transfer, balance)
-    date = format_date(transfer.timestamp)
-    credit = transfer.deposit? ? format_money(transfer.amount) : nil
-    debit = transfer.withdrawal? ? format_money(transfer.amount.abs) : nil
-    total_balance = format_money(balance)
-    join_transfer_array([date, credit, debit, total_balance])
-  end
-
   def join_transfer_array(row)
-    amounts = row[1..-2].map { |amount| amount.nil? ? ' ' : " #{amount} " }
-    ["#{row[0]} ", *amounts, " #{row[-1]}"].join('||')
-  end
-
-  def format_date(date)
-    date.strftime('%d/%m/%Y')
-  end
-
-  def format_money(amount)
-    format('%.2f', amount.to_f)
+    central_columns = row[1..-2].map { |amount| amount.nil? ? ' ' : " #{amount} " }
+    ["#{row[0]} ", *central_columns, " #{row[-1]}"].join('||')
   end
 end
